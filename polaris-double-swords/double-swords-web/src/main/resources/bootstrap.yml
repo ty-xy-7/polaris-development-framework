@@ -1,0 +1,64 @@
+global:
+  nacos.addr: xxx:8848
+  nacos.namespace: xxx
+
+server:
+  port: 7007
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: polaris-double-swords
+  profiles:
+    active:  dev
+  cloud:
+    nacos:
+# spring cloud nacos config
+      config:
+        server-addr: ${global.nacos.addr}
+        # 配置文件后缀名
+        file-extension: yml
+        # 分组
+        group: ${spring.application.name}
+        # 支持动态刷新
+        refresh-enabled: true
+        # 命名空间
+        namespace: ${global.nacos.namespace}
+        # 是否启用nacos配置
+        enabled: true
+        username: nacos
+        password: nacos
+#        extension-configs[0]:
+#          data-id: xxx
+#          group: xxx
+#          refresh: true
+      # spring cloud discovery config
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        group: double-swords-group
+        namespace: ${spring.cloud.nacos.config.namespace}
+        enabled: true
+
+# 已经统一抽出
+swagger:
+  basePackage: pub.xh.polaris.doubleswords.controller
+  groupName: double-swords
+  title: 双刃剑服务 API
+  description: 双刃剑demo
+  version: V1.0.0
+  serviceUrl: http://localhost:7008
+
+# 日志
+logging:
+  name: ${spring.application.name}
+  #@spring.profiles.active@
+  file:
+    max-size: 50MB
+    path: /opt/logs/double-swords
+  root: info
+  com:
+    alibaba:
+      nacos:
+        config:
+          log:
+            level: error

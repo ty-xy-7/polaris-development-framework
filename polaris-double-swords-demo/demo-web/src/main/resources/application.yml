@@ -1,0 +1,35 @@
+dubbo:
+  # 配置服务信息
+  application:
+    id: ${spring.application.name}
+    name: ${spring.application.name}
+    version: ${spring.profiles.active}
+    # 禁用QOS同一台机器可能会有端口冲突现象
+    qos-enable: false
+    qos-accept-foreign-ip: false
+  # 配置注册中心 nacos+namespace
+  registry:
+    address: nacos://${spring.cloud.nacos.config.server-addr}?namespace=${spring.cloud.nacos.discovery.namespace}
+  # consumer如果此工程作为消费方需要配置
+  consumer:
+    check: false
+    timeout: 30000
+    retries: 0
+    group: double-swords-provider
+    version: dev
+  # provider如果此工程作为服务方需要配置
+#  provider:
+#    id: double-swords-provider
+#    timeout: 30000 #远程调用超时时间
+#    version: ${spring.profiles.active} #服务版本
+#    owner: xh #服务负责人
+#    group: double-swords #分组
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 27008
+    threadpool: cached
+    threads: 3000
+    dispatcher: message
+  cloud:
+    subscribed-services: double-swords-server
